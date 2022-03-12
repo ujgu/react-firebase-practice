@@ -1,26 +1,8 @@
-import { useEffect } from "react";
-import { signUp, signIn } from "./config/firebase";
+import React from "react";
+import Router from "./config/router";
 
-const App = () => {
-  useEffect(() => {
-    // signUp("Joe", "joe@mail.com", "1234567")
-    //   .then(() => {
-    //     console.log("Done");
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
-
-    signIn("joe@mail.com", "1234567")
-      .then(() => {
-        console.log("Done");
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  }, []);
-
-  return <h1>Hi, App!</h1>;
-};
+function App() {
+  return <Router />;
+}
 
 export default App;
