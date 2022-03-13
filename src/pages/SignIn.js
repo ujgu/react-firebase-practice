@@ -9,8 +9,22 @@ import {
   Typography,
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
+import { useSelector, useDispatch } from "react-redux";
+import { changeEmail, changePassword } from "../redux/authSlice";
 
 function SignIn() {
+  const email = useSelector((state) => state.auth.email);
+  const password = useSelector((state) => state.auth.password);
+
+  const dispatch = useDispatch();
+
+  const handleEmailChange = (e) => {
+    dispatch(changeEmail(e.target.value));
+  };
+  const handlePasswordChange = (e) => {
+    dispatch(changePassword(e.target.value));
+  };
+
   return (
     <>
       <CssBaseline />
@@ -29,6 +43,8 @@ function SignIn() {
             required
             autoComplete="email"
             autoFocus
+            value={email}
+            onChange={(e) => handleEmailChange(e)}
           />
           <TextField
             fullWidth
@@ -36,6 +52,8 @@ function SignIn() {
             label="Password"
             required
             type="password"
+            value={password}
+            onChange={(e) => handlePasswordChange(e)}
           />
           <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
             Sign in
