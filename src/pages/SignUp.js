@@ -10,12 +10,19 @@ import {
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
-import { changeName, changeEmail, changePassword } from "../redux/authSlice";
+import {
+  changeName,
+  changeEmail,
+  changePassword,
+  register,
+} from "../redux/authSlice";
 
 function SignUp() {
   const name = useSelector((state) => state.auth.name);
   const email = useSelector((state) => state.auth.email);
   const password = useSelector((state) => state.auth.password);
+  const error = useSelector((state) => state.auth.error);
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   const dispatch = useDispatch();
 
@@ -29,17 +36,26 @@ function SignUp() {
     dispatch(changePassword(e.target.value));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(register({ name, email, password }));
+  };
   return (
     <>
       <CssBaseline />
       <Container maxWidth="xs">
-        <Box component="form" sx={{ mt: 4 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
           <Avatar sx={{ mx: "auto", bgcolor: "secondary.main" }}>
             <LockOutlined />
           </Avatar>
           <Typography variant="h5" sx={{ textAlign: "center" }}>
             Sign up
           </Typography>
+          {error && (
+            <Typography sx={{ textAlign: "center", color: "error.main" }}>
+              {error}
+            </Typography>
+          )}
           <TextField
             fullWidth
             margin="normal"
@@ -68,8 +84,14 @@ function SignUp() {
             value={password}
             onChange={(e) => handlePasswordChange(e)}
           />
-          <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-            Sign up
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={isLoading}
+            fullWidth
+            sx={{ mt: 2 }}
+          >
+            {isLoading ? "Loading..." : "Sign up"}
           </Button>
           <Box
             sx={{
@@ -80,7 +102,7 @@ function SignUp() {
               cursor: "pointer",
             }}
           >
-            <Link>Already have an account? Sign in</Link>
+            <Link href="/sign-in">Already have an account? Sign in</Link>
           </Box>
         </Box>
       </Container>
